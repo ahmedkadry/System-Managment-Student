@@ -1,0 +1,124 @@
+<div class="mb-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+    <div>
+        <h2 class="text-2xl font-bold text-white">Courses</h2>
+        <p class="text-gray-400 text-sm">Manage academic courses</p>
+    </div>
+    <a href="/courses/create"
+        class="bg-brand-violet hover:bg-violet-600 text-white px-4 py-2 rounded-lg font-medium flex items-center gap-2 shadow-glow-violet">
+        <i data-lucide="plus" class="w-4 h-4"></i> Add Course
+    </a>
+</div>
+
+<div class="bg-brand-slate rounded-2xl border border-gray-800 shadow-lg overflow-hidden">
+
+    <div class="p-4 border-b border-gray-800 bg-brand-slate/50">
+        <form action="/courses" method="GET" class="flex gap-2 max-w-md">
+            <div class="relative flex-1">
+                <i data-lucide="search" class="absolute left-3 top-2.5 text-gray-500 w-4 h-4"></i>
+                <input type="text" name="search" value="<%= search %>" placeholder="Search by name or code..."
+                    class="w-full bg-brand-navy border border-gray-700 rounded-lg pl-10 pr-4 py-2 text-sm text-white focus:outline-none focus:border-brand-violet">
+            </div>
+            <button type="submit"
+                class="bg-gray-700 hover:bg-gray-600 text-white px-4 py-2 rounded-lg text-sm">Search</button>
+        </form>
+    </div>
+
+    <div class="overflow-x-auto">
+        <table class="w-full text-left text-sm text-gray-400">
+            <thead class="text-xs uppercase bg-brand-navy/50 border-b border-gray-800">
+                <tr>
+                    <th class="px-6 py-4">Code</th>
+                    <th class="px-6 py-4">Course</th>
+                    <th class="px-6 py-4">Teacher</th>
+                    <th class="px-6 py-4">Credits</th>
+                    <th class="px-6 py-4">Enrolled</th>
+                    <th class="px-6 py-4 text-right">Actions</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-800">
+                <% if (!courses || courses.length===0) { %>
+                    <tr>
+                        <td colspan="6" class="px-6 py-8 text-center text-gray-500">No courses found.</td>
+                    </tr>
+                    <% } else { %>
+                        <% for (const c of courses) { %>
+                            <tr class="hover:bg-brand-navy/30 transition-colors">
+                                <td class="px-6 py-4 font-mono text-brand-cyan">
+                                    <%= c.course_code %>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <a href="/courses/<%= c.id %>"
+                                        class="font-medium text-white hover:text-brand-violet">
+                                        <%= c.name %>
+                                    </a>
+                                    <div class="text-xs text-gray-500">
+                                        <%= c.department_name || 'General' %>
+                                    </div>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <%= c.teacher_name || '—' %>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <%= c.credit_hours %>
+                                </td>
+                                <td class="px-6 py-4">
+                                    <span
+                                        class="px-2.5 py-1 rounded-full bg-brand-violet/10 text-brand-violet text-xs font-medium">
+                                        <%= c.enrolled_count %> students
+                                    </span>
+                                </td>
+                                <td class="px-6 py-4 text-right">
+                                    <a href="/courses/<%= c.id %>" class="text-gray-400 hover:text-brand-cyan mr-3"
+                                        title="View">
+                                        <i data-lucide="eye" class="w-4 h-4 inline"></i>
+                                    </a>
+                                    <a href="/courses/edit/<%= c.id %>"
+                                        class="text-gray-400 hover:text-brand-violet mr-3" title="Edit">
+                                        <i data-lucide="edit" class="w-4 h-4 inline"></i>
+                                    </a>
+                                    <button onclick="confirmDelete(<%= c.id %>)"
+                                        class="text-gray-400 hover:text-red-500" title="Delete">
+                                        <i data-lucide="trash-2" class="w-4 h-4 inline"></i>
+                                    </button>
+                                </td>
+                            </tr>
+                            <% } %>
+                                <% } %>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="p-4 border-t border-gray-800 flex items-center justify-between bg-brand-slate/50">
+        <span class="text-sm text-gray-400">Page <%= currentPage %> of <%= totalPages || 1 %></span>
+        <div class="flex gap-2">
+            <% if (currentPage> 1) { %>
+                <a href="/courses?page=<%= currentPage - 1 %>&search=<%= search %>"
+                    class="px-3 py-1 bg-brand-navy border border-gray-700 rounded hover:bg-gray-700 text-white text-sm">Previous</a>
+                <% } %>
+                    <% if (currentPage < totalPages) { %>
+                        <a href="/courses?page=<%= currentPage + 1 %>&search=<%= search %>"
+                            class="px-3 py-1 bg-brand-navy border border-gray-700 rounded hover:bg-gray-700 text-white text-sm">Next</a>
+                        <% } %>
+        </div>
+    </div>
+</div>
+
+<script>
+    function confirmDelete(id) {
+        Swal.fire({
+            title: 'Delete course?',
+            text: 'This will also remove attendance and grades for this course.',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#EF4444',
+            cancelButtonColor: '#334155',
+            confirmButtonText: 'Yes, delete it!',
+            background: '#1E293B',
+            color: '#F8FAFC'
+        }).then(function (result) {
+            if (result.isConfirmed) {
+                window.location.href = '/courses/delete/' + id;
+            }
+        });
+    }
+</script>

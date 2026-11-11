@@ -1,0 +1,100 @@
+<div class="mb-6">
+    <a href="/exams?course=<%= exam.course_id %>"
+        class="text-gray-400 hover:text-white flex items-center gap-2 text-sm mb-2">
+        <i data-lucide="arrow-left" class="w-4 h-4"></i> Back to Exams
+    </a>
+    <div class="flex justify-between items-start flex-wrap gap-4">
+        <div>
+            <h2 class="text-2xl font-bold text-white">
+                <%= exam.title %>
+            </h2>
+            <p class="text-gray-400 text-sm">
+                <%= exam.course_code %> — <%= exam.course_name %> &middot;
+                        <%= new Date(exam.exam_date).toLocaleDateString() %> &middot;
+                            Max: <strong class="text-white">
+                                <%= exam.max_marks %>
+                            </strong> &middot;
+                            Pass: <strong class="text-white">
+                                <%= exam.passing_marks %>
+                            </strong>
+            </p>
+        </div>
+    </div>
+</div>
+
+<% if (studentRows.length===0) { %>
+    <div class="bg-brand-slate rounded-2xl border border-gray-800 p-10 text-center">
+        <i data-lucide="users" class="w-12 h-12 mx-auto text-gray-600 mb-3"></i>
+        <p class="text-gray-400">No students enrolled in this course.</p>
+        <a href="/courses/<%= exam.course_id %>" class="inline-block mt-4 text-brand-violet hover:underline">Enroll
+            students →</a>
+    </div>
+    <% } else { %>
+        <form action="/exams/<%= exam.id %>/grades" method="POST">
+            <div class="bg-brand-slate rounded-2xl border border-gray-800 overflow-hidden">
+
+                <div class="p-4 border-b border-gray-800 bg-brand-violet/5 flex items-center gap-2">
+                    <i data-lucide="info" class="w-4 h-4 text-brand-violet"></i>
+                    <p class="text-sm text-gray-400">Enter marks from <strong class="text-white">0</strong> to <strong
+                            class="text-white">
+                            <%= exam.max_marks %>
+                        </strong>. Leave blank to remove a grade.</p>
+                </div>
+
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-sm text-gray-400">
+                        <thead class="text-xs uppercase bg-brand-navy/50 border-b border-gray-800">
+                            <tr>
+                                <th class="px-6 py-3">Student</th>
+                                <th class="px-6 py-3">ID</th>
+                                <th class="px-6 py-3 w-40">Marks</th>
+                                <th class="px-6 py-3 text-center">%</th>
+                                <th class="px-6 py-3 text-center">Grade</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-800">
+                            <% for (const s of studentRows) { %>
+                                <tr class="hover:bg-brand-navy/30">
+                                    <td class="px-6 py-3">
+                                        <div class="flex items-center gap-3">
+                                            <img src="<%= s.avatar %>"
+                                                class="w-8 h-8 rounded-full object-cover border border-gray-700" alt="">
+                                            <span class="text-white">
+                                                <%= s.name %>
+                                            </span>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-3 font-mono text-brand-cyan text-xs">
+                                        <%= s.code %>
+                                    </td>
+                                    <td class="px-6 py-3">
+                                        <input type="number" name="grades[<%= s.id %>]" value="<%= s.marks %>" min="0"
+                                            max="<%= exam.max_marks %>" step="0.5"
+                                            class="w-full bg-brand-navy border border-gray-700 rounded-lg px-3 py-1.5 text-white text-sm focus:outline-none focus:border-brand-violet"
+                                            placeholder="—">
+                                    </td>
+                                    <td class="px-6 py-3 text-center text-white">
+                                        <%= s.pct %>
+                                    </td>
+                                    <td class="px-6 py-3 text-center">
+                                        <span class="px-2.5 py-1 rounded-full text-xs font-bold <%= s.letterClass %>">
+                                            <%= s.letter %>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <% } %>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="p-4 border-t border-gray-800 flex justify-end gap-3">
+                    <a href="/exams?course=<%= exam.course_id %>"
+                        class="px-6 py-2.5 rounded-lg text-gray-300 hover:bg-gray-800">Cancel</a>
+                    <button type="submit"
+                        class="bg-brand-violet hover:bg-violet-600 text-white px-6 py-2.5 rounded-lg font-medium shadow-glow-violet">
+                        Save Grades
+                    </button>
+                </div>
+            </div>
+        </form>
+        <% } %>

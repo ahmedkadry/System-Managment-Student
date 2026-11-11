@@ -1,0 +1,110 @@
+<div class="mb-6">
+    <a href="/courses" class="text-gray-400 hover:text-white flex items-center gap-2 text-sm mb-2">
+        <i data-lucide="arrow-left" class="w-4 h-4"></i> Back to Courses
+    </a>
+    <div class="flex justify-between items-start flex-wrap gap-4">
+        <div>
+            <h2 class="text-2xl font-bold text-white">
+                <%= course.name %>
+            </h2>
+            <p class="text-brand-cyan font-mono">
+                <%= course.course_code %> • <%= course.credit_hours %> credits
+            </p>
+        </div>
+        <a href="/courses/edit/<%= course.id %>"
+            class="bg-gray-800 hover:bg-gray-700 text-white px-4 py-2 rounded-lg text-sm border border-gray-700 flex items-center gap-2">
+            <i data-lucide="edit" class="w-4 h-4"></i> Edit
+        </a>
+    </div>
+</div>
+
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+    <div class="bg-brand-slate p-5 rounded-2xl border border-gray-800">
+        <p class="text-gray-400 text-xs">Teacher</p>
+        <p class="text-white font-medium mt-1">
+            <%= course.teacher_name || 'Unassigned' %>
+        </p>
+    </div>
+    <div class="bg-brand-slate p-5 rounded-2xl border border-gray-800">
+        <p class="text-gray-400 text-xs">Department</p>
+        <p class="text-white font-medium mt-1">
+            <%= course.department_name || 'General' %>
+        </p>
+    </div>
+    <div class="bg-brand-slate p-5 rounded-2xl border border-gray-800">
+        <p class="text-gray-400 text-xs">Enrolled</p>
+        <p class="text-white font-medium mt-1">
+            <%= enrolled.length %> students
+        </p>
+    </div>
+</div>
+
+<div class="bg-brand-slate rounded-2xl border border-gray-800 overflow-hidden mb-6">
+    <div class="p-5 border-b border-gray-800 flex justify-between items-center flex-wrap gap-3">
+        <h3 class="text-lg font-semibold text-white">Enrolled Students</h3>
+        <% if (available.length> 0) { %>
+            <form action="/courses/<%= course.id %>/enroll" method="POST" class="flex gap-2">
+                <select name="student_id" required
+                    class="bg-brand-navy border border-gray-700 rounded-lg px-3 py-2 text-sm text-white focus:outline-none focus:border-brand-violet">
+                    <option value="">Add student...</option>
+                    <% for (const s of available) { %>
+                        <option value="<%= s.id %>">
+                            <%= s.first_name %>
+                                <%= s.last_name %> (<%= s.student_id_code %>)
+                        </option>
+                        <% } %>
+                </select>
+                <button
+                    class="bg-brand-violet hover:bg-violet-600 text-white px-4 py-2 rounded-lg text-sm">Enroll</button>
+            </form>
+            <% } else { %>
+                <span class="text-xs text-gray-500">No available students to add</span>
+                <% } %>
+    </div>
+
+    <div class="overflow-x-auto">
+        <table class="w-full text-left text-sm text-gray-400">
+            <thead class="text-xs uppercase bg-brand-navy/50 border-b border-gray-800">
+                <tr>
+                    <th class="px-6 py-3">Student</th>
+                    <th class="px-6 py-3">ID</th>
+                    <th class="px-6 py-3 text-right">Action</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-800">
+                <% if (enrolled.length===0) { %>
+                    <tr>
+                        <td colspan="3" class="px-6 py-8 text-center text-gray-500">No students enrolled yet.</td>
+                    </tr>
+                    <% } else { %>
+                        <% for (const s of enrolled) { %>
+                            <tr class="hover:bg-brand-navy/30">
+                                <td class="px-6 py-3 flex items-center gap-3">
+                                    <img src="/<%= s.profile_photo %>"
+                                        class="w-8 h-8 rounded-full object-cover border border-gray-700" alt="">
+                                    <span class="text-white">
+                                        <%= s.first_name %>
+                                            <%= s.last_name %>
+                                    </span>
+                                </td>
+                                <td class="px-6 py-3 font-mono text-brand-cyan">
+                                    <%= s.student_id_code %>
+                                </td>
+                                <td class="px-6 py-3 text-right">
+                                    <form action="/courses/<%= course.id %>/unenroll/<%= s.enrollment_id %>"
+                                        method="POST" onsubmit="return confirm('Remove this student from the course?')">
+                                        <button class="text-xs text-red-400 hover:text-red-300">Remove</button>
+                                    </form>
+                                </td>
+                            </tr>
+                            <% } %>
+                                <% } %>
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<a href="/attendance?course=<%= course.id %>"
+    class="inline-flex items-center gap-2 bg-brand-cyan/20 text-brand-cyan px-4 py-2 rounded-lg border border-brand-cyan/30 hover:bg-brand-cyan/30 transition-colors">
+    <i data-lucide="calendar-check" class="w-4 h-4"></i> Take Attendance
+</a>

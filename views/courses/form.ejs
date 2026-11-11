@@ -1,0 +1,75 @@
+<div class="mb-6">
+    <a href="/courses" class="text-gray-400 hover:text-white flex items-center gap-2 text-sm mb-2">
+        <i data-lucide="arrow-left" class="w-4 h-4"></i> Back
+    </a>
+    <h2 class="text-2xl font-bold text-white">
+        <%= course ? 'Edit Course' : 'Add Course' %>
+    </h2>
+</div>
+
+<div class="bg-brand-slate rounded-2xl border border-gray-800 p-6 md:p-8 max-w-4xl">
+    <form action="<%= action %>" method="POST" class="space-y-6">
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+                <label class="block text-sm text-gray-300 mb-1">Course Code *</label>
+                <input type="text" name="course_code" required value="<%= course ? course.course_code : '' %>"
+                    placeholder="CS101"
+                    class="w-full bg-brand-navy border border-gray-700 rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-brand-violet">
+            </div>
+            <div>
+                <label class="block text-sm text-gray-300 mb-1">Course Name *</label>
+                <input type="text" name="name" required value="<%= course ? course.name : '' %>"
+                    class="w-full bg-brand-navy border border-gray-700 rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-brand-violet">
+            </div>
+        </div>
+
+        <div>
+            <label class="block text-sm text-gray-300 mb-1">Description</label>
+            <textarea name="description" rows="3"
+                class="w-full bg-brand-navy border border-gray-700 rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-brand-violet"><%= course && course.description ? course.description : '' %></textarea>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div>
+                <label class="block text-sm text-gray-300 mb-1">Department</label>
+                <select name="department_id"
+                    class="w-full bg-brand-navy border border-gray-700 rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-brand-violet">
+                    <option value="">Select</option>
+                    <% for (const d of departments) { %>
+                        <option value="<%= d.id %>" <%=course && course.department_id===d.id ? 'selected' : '' %>><%=
+                                d.name %>
+                        </option>
+                        <% } %>
+                </select>
+            </div>
+            <div>
+                <label class="block text-sm text-gray-300 mb-1">Credit Hours *</label>
+                <input type="number" name="credit_hours" required min="1" max="10"
+                    value="<%= course ? course.credit_hours : 3 %>"
+                    class="w-full bg-brand-navy border border-gray-700 rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-brand-violet">
+            </div>
+            <div>
+                <label class="block text-sm text-gray-300 mb-1">Assigned Teacher</label>
+                <select name="teacher_id"
+                    class="w-full bg-brand-navy border border-gray-700 rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-brand-violet">
+                    <option value="">Unassigned</option>
+                    <% for (const t of teachers) { %>
+                        <option value="<%= t.id %>" <%=course && course.teacher_id===t.id ? 'selected' : '' %>><%=
+                                t.first_name %>
+                                <%= t.last_name %>
+                        </option>
+                        <% } %>
+                </select>
+            </div>
+        </div>
+
+        <div class="flex justify-end gap-4 border-t border-gray-800 pt-6">
+            <a href="/courses" class="px-6 py-2.5 rounded-lg text-gray-300 hover:bg-gray-800">Cancel</a>
+            <button type="submit"
+                class="bg-brand-violet hover:bg-violet-600 text-white px-6 py-2.5 rounded-lg font-medium shadow-glow-violet">
+                <%= course ? 'Update Course' : 'Create Course' %>
+            </button>
+        </div>
+    </form>
+</div>

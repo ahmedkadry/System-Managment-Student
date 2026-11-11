@@ -1,0 +1,133 @@
+<%- include('../layouts/main', { body: '' , pageScripts: '' }) %>
+
+    <!-- Note: In a real EJS setup, the layout handles the wrapper. We'll place this content inside the layout body. -->
+    <div class="relative bg-brand-navy overflow-hidden">
+        <!-- Background Effects -->
+        <div
+            class="absolute top-0 left-1/2 -translate-x-1/2 w-[1000px] h-[500px] bg-brand-violet/20 blur-[120px] rounded-full pointer-events-none">
+        </div>
+
+        <!-- Hero Section -->
+        <div class="relative pt-32 pb-20 sm:pt-40 sm:pb-24 overflow-hidden">
+            <div
+                class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center lg:text-left flex flex-col lg:flex-row items-center">
+
+                <!-- Hero Text -->
+                <div class="lg:w-1/2 z-10">
+                    <span
+                        class="inline-block py-1 px-3 rounded-full bg-gray-800 border border-gray-700 text-brand-cyan text-sm font-semibold mb-6">
+                        The School Operating System
+                    </span>
+                    <h1 class="text-5xl md:text-6xl font-bold text-white leading-tight mb-6">
+                        Run your entire school <br>
+                        <span
+                            class="text-transparent bg-clip-text bg-gradient-to-r from-brand-violet to-brand-cyan">from
+                            one platform.</span>
+                    </h1>
+                    <p class="mt-4 text-xl text-gray-400 max-w-2xl lg:mx-0 mx-auto mb-10">
+                        Smart Student Management Made Simple. Unify students, teachers, attendance, and grades with an
+                        intelligent, modern dashboard.
+                    </p>
+                    <div class="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
+                        <a href="/login"
+                            class="bg-white text-brand-navy px-8 py-3.5 rounded-full font-bold hover:bg-gray-100 transition-colors shadow-lg">Admin
+                            Login</a>
+                        <a href="#features"
+                            class="bg-gray-800 text-white border border-gray-700 px-8 py-3.5 rounded-full font-bold hover:bg-gray-700 transition-colors">Explore
+                            Features</a>
+                    </div>
+                </div>
+
+                <!-- Dashboard Mockup (Visual representation of the image) -->
+                <div class="lg:w-1/2 mt-16 lg:mt-0 relative z-10">
+                    <div
+                        class="absolute inset-0 bg-gradient-to-r from-brand-violet to-brand-cyan blur-2xl opacity-20 rounded-3xl transform rotate-3">
+                    </div>
+                    <div
+                        class="relative bg-brand-slate border border-gray-700 rounded-2xl shadow-2xl p-6 backdrop-blur-xl">
+                        <!-- Mock Header -->
+                        <div class="flex items-center justify-between mb-6 border-b border-gray-700 pb-4">
+                            <div class="flex space-x-2">
+                                <div class="w-3 h-3 rounded-full bg-red-500"></div>
+                                <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
+                                <div class="w-3 h-3 rounded-full bg-green-500"></div>
+                            </div>
+                            <span class="text-sm text-gray-400 font-medium">EduManage Dashboard</span>
+                        </div>
+                        <!-- Mock Stats -->
+                        <div class="grid grid-cols-3 gap-4 mb-6">
+                            <div class="bg-brand-navy/50 p-4 rounded-xl border border-gray-700">
+                                <p class="text-gray-400 text-xs mb-1">Students</p>
+                                <p class="text-2xl font-bold text-white">1,245</p>
+                            </div>
+                            <div class="bg-brand-navy/50 p-4 rounded-xl border border-gray-700">
+                                <p class="text-gray-400 text-xs mb-1">Attendance</p>
+                                <p class="text-2xl font-bold text-brand-cyan">94%</p>
+                            </div>
+                            <div class="bg-brand-navy/50 p-4 rounded-xl border border-gray-700">
+                                <p class="text-gray-400 text-xs mb-1">Courses</p>
+                                <p class="text-2xl font-bold text-brand-violet">42</p>
+                            </div>
+                        </div>
+                        <!-- Mock Chart -->
+                        <div
+                            class="bg-brand-navy/50 p-4 rounded-xl border border-gray-700 h-40 flex items-end justify-between gap-2">
+                            <div class="w-full bg-brand-violet/40 rounded-t-md h-[40%]"></div>
+                            <div class="w-full bg-brand-violet/60 rounded-t-md h-[70%]"></div>
+                            <div class="w-full bg-brand-violet rounded-t-md h-[90%]"></div>
+                            <div class="w-full bg-brand-cyan/40 rounded-t-md h-[50%]"></div>
+                            <div class="w-full bg-brand-cyan/80 rounded-t-md h-[80%]"></div>
+                            <div class="w-full bg-brand-cyan rounded-t-md h-[100%]"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Features Section -->
+        <div id="features" class="py-24 bg-brand-navy/50 border-t border-gray-800">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div class="text-center mb-16">
+                    <h2 class="text-3xl md:text-4xl font-bold text-white mb-4">Everything you need to manage</h2>
+                    <p class="text-gray-400 max-w-2xl mx-auto">Streamline your administrative tasks with our
+                        comprehensive suite of tools.</p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                    <!-- Feature 1 -->
+                    <div
+                        class="bg-brand-slate p-8 rounded-2xl border border-gray-700 hover:border-brand-violet transition-colors group">
+                        <div
+                            class="w-12 h-12 bg-brand-violet/20 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                            <i data-lucide="users" class="text-brand-violet w-6 h-6"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-3">Student Records</h3>
+                        <p class="text-gray-400">Manage enrollment, profiles, and academic history in one secure,
+                            centralized database.</p>
+                    </div>
+                    <!-- Feature 2 -->
+                    <div
+                        class="bg-brand-slate p-8 rounded-2xl border border-gray-700 hover:border-brand-cyan transition-colors group">
+                        <div
+                            class="w-12 h-12 bg-brand-cyan/20 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                            <i data-lucide="check-square" class="text-brand-cyan w-6 h-6"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-3">Attendance Tracking</h3>
+                        <p class="text-gray-400">Digital attendance registers with real-time analytics and automated
+                            percentage calculations.</p>
+                    </div>
+                    <!-- Feature 3 -->
+                    <div
+                        class="bg-brand-slate p-8 rounded-2xl border border-gray-700 hover:border-purple-500 transition-colors group">
+                        <div
+                            class="w-12 h-12 bg-purple-500/20 rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform">
+                            <i data-lucide="bar-chart-2" class="text-purple-400 w-6 h-6"></i>
+                        </div>
+                        <h3 class="text-xl font-bold text-white mb-3">Grades & Reports</h3>
+                        <p class="text-gray-400">Generate comprehensive academic reports, transcripts, and visual
+                            performance charts.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>

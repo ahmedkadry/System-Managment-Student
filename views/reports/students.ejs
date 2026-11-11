@@ -1,0 +1,100 @@
+<div class="mb-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+    <div>
+        <a href="/reports" class="text-gray-400 hover:text-white flex items-center gap-2 text-sm mb-1">
+            <i data-lucide="arrow-left" class="w-4 h-4"></i> Back to Reports
+        </a>
+        <h2 class="text-2xl font-bold text-white">Student Directory</h2>
+    </div>
+    <div class="flex gap-2">
+        <a href="/reports/export/students"
+            class="bg-green-600 hover:bg-green-500 text-white px-4 py-2 rounded-lg text-sm flex items-center gap-2">
+            <i data-lucide="download" class="w-4 h-4"></i> Export CSV
+        </a>
+        <button onclick="window.print()"
+            class="bg-gray-700 hover:bg-gray-600 text-white px-4 py-2 rounded-lg text-sm flex items-center gap-2">
+            <i data-lucide="printer" class="w-4 h-4"></i> Print
+        </button>
+    </div>
+</div>
+
+<div class="bg-brand-slate rounded-2xl border border-gray-800 overflow-hidden">
+    <div class="p-4 border-b border-gray-800 bg-brand-slate/50">
+        <form action="/reports/students" method="GET" class="flex gap-3 flex-wrap">
+            <select name="status" class="bg-brand-navy border border-gray-700 rounded-lg px-4 py-2 text-sm text-white">
+                <option value="">All Status</option>
+                <option value="Active" <%=filters.status==='Active' ? 'selected' : '' %>>Active</option>
+                <option value="Inactive" <%=filters.status==='Inactive' ? 'selected' : '' %>>Inactive</option>
+                <option value="Graduated" <%=filters.status==='Graduated' ? 'selected' : '' %>>Graduated</option>
+            </select>
+            <select name="class" class="bg-brand-navy border border-gray-700 rounded-lg px-4 py-2 text-sm text-white">
+                <option value="">All Classes</option>
+                <% for (const c of classes) { %>
+                    <option value="<%= c.id %>" <%=String(filters.class)===String(c.id) ? 'selected' : '' %>><%= c.name
+                            %>
+                    </option>
+                    <% } %>
+            </select>
+            <button type="submit"
+                class="bg-gray-700 hover:bg-gray-600 text-white px-4 py-2 rounded-lg text-sm">Filter</button>
+        </form>
+    </div>
+
+    <div class="overflow-x-auto">
+        <table class="w-full text-left text-sm text-gray-400">
+            <thead class="text-xs uppercase bg-brand-navy/50 border-b border-gray-800">
+                <tr>
+                    <th class="px-4 py-3">ID</th>
+                    <th class="px-4 py-3">Name</th>
+                    <th class="px-4 py-3">Phone</th>
+                    <th class="px-4 py-3">Gender</th>
+                    <th class="px-4 py-3">DOB</th>
+                    <th class="px-4 py-3">Enrolled</th>
+                    <th class="px-4 py-3">Dept</th>
+                    <th class="px-4 py-3">Class</th>
+                    <th class="px-4 py-3">Status</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-800">
+                <% if (rows.length===0) { %>
+                    <tr>
+                        <td colspan="9" class="px-4 py-8 text-center text-gray-500">No students found.</td>
+                    </tr>
+                    <% } else { %>
+                        <% for (const s of rows) { %>
+                            <tr class="hover:bg-brand-navy/30">
+                                <td class="px-4 py-3 font-mono text-brand-cyan text-xs">
+                                    <%= s.code %>
+                                </td>
+                                <td class="px-4 py-3 text-white">
+                                    <%= s.name %>
+                                </td>
+                                <td class="px-4 py-3">
+                                    <%= s.phone || '—' %>
+                                </td>
+                                <td class="px-4 py-3">
+                                    <%= s.gender %>
+                                </td>
+                                <td class="px-4 py-3">
+                                    <%= s.dob %>
+                                </td>
+                                <td class="px-4 py-3">
+                                    <%= s.enrollment %>
+                                </td>
+                                <td class="px-4 py-3">
+                                    <%= s.department %>
+                                </td>
+                                <td class="px-4 py-3">
+                                    <%= s.class %>
+                                </td>
+                                <td class="px-4 py-3">
+                                    <span class="px-2 py-0.5 rounded-full text-xs font-medium <%= s.statusClass %>">
+                                        <%= s.status %>
+                                    </span>
+                                </td>
+                            </tr>
+                            <% } %>
+                                <% } %>
+            </tbody>
+        </table>
+    </div>
+</div>

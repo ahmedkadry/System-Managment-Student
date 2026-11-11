@@ -1,0 +1,115 @@
+<div class="mb-6">
+    <a href="/attendance" class="text-gray-400 hover:text-white flex items-center gap-2 text-sm mb-2">
+        <i data-lucide="arrow-left" class="w-4 h-4"></i> Back
+    </a>
+    <h2 class="text-2xl font-bold text-white">Attendance Reports</h2>
+</div>
+
+<div class="bg-brand-slate rounded-2xl border border-gray-800 p-5 mb-6">
+    <form action="/attendance/reports" method="GET" class="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <select name="course" required
+            class="bg-brand-navy border border-gray-700 rounded-lg px-4 py-2 text-sm text-white focus:outline-none focus:border-brand-violet">
+            <option value="">Select course</option>
+            <% for (const c of courses) { %>
+                <option value="<%= c.id %>" <%=String(filters.course)===String(c.id) ? 'selected' : '' %>>
+                    <%= c.course_code %> — <%= c.name %>
+                </option>
+                <% } %>
+        </select>
+        <input type="date" name="from" value="<%= filters.from || '' %>"
+            class="bg-brand-navy border border-gray-700 rounded-lg px-4 py-2 text-sm text-white [color-scheme:dark]">
+        <input type="date" name="to" value="<%= filters.to || '' %>"
+            class="bg-brand-navy border border-gray-700 rounded-lg px-4 py-2 text-sm text-white [color-scheme:dark]">
+        <button class="bg-brand-violet hover:bg-violet-600 text-white px-4 py-2 rounded-lg text-sm font-medium">Generate
+            Report</button>
+    </form>
+</div>
+
+<% if (filters.course) { %>
+
+    <div class="grid grid-cols-2 md:grid-cols-5 gap-4 mb-6">
+        <div class="bg-brand-slate p-4 rounded-xl border border-gray-800">
+            <p class="text-gray-400 text-xs">Total</p>
+            <p class="text-white text-2xl font-bold">
+                <%= stats.total %>
+            </p>
+        </div>
+        <div class="bg-brand-slate p-4 rounded-xl border border-green-500/30">
+            <p class="text-green-400 text-xs">Present</p>
+            <p class="text-white text-2xl font-bold">
+                <%= stats.present %>
+            </p>
+        </div>
+        <div class="bg-brand-slate p-4 rounded-xl border border-red-500/30">
+            <p class="text-red-400 text-xs">Absent</p>
+            <p class="text-white text-2xl font-bold">
+                <%= stats.absent %>
+            </p>
+        </div>
+        <div class="bg-brand-slate p-4 rounded-xl border border-yellow-500/30">
+            <p class="text-yellow-400 text-xs">Late</p>
+            <p class="text-white text-2xl font-bold">
+                <%= stats.late %>
+            </p>
+        </div>
+        <div class="bg-brand-slate p-4 rounded-xl border border-blue-500/30">
+            <p class="text-blue-400 text-xs">Excused</p>
+            <p class="text-white text-2xl font-bold">
+                <%= stats.excused %>
+            </p>
+        </div>
+    </div>
+
+    <div class="bg-brand-slate rounded-2xl border border-gray-800 overflow-hidden">
+        <div class="overflow-x-auto">
+            <table class="w-full text-left text-sm text-gray-400">
+                <thead class="text-xs uppercase bg-brand-navy/50 border-b border-gray-800">
+                    <tr>
+                        <th class="px-6 py-3">Date</th>
+                        <th class="px-6 py-3">Student</th>
+                        <th class="px-6 py-3">ID</th>
+                        <th class="px-6 py-3">Status</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-800">
+                    <% if (!records || records.length===0) { %>
+                        <tr>
+                            <td colspan="4" class="px-6 py-8 text-center text-gray-500">No attendance records found.
+                            </td>
+                        </tr>
+                        <% } else { %>
+                            <% for (const r of records) { %>
+                                <% let statusClass='bg-blue-500/10 text-blue-400' ; if (r.status==='Present' )
+                                    statusClass='bg-green-500/10 text-green-400' ; if (r.status==='Absent' )
+                                    statusClass='bg-red-500/10 text-red-400' ; if (r.status==='Late' )
+                                    statusClass='bg-yellow-500/10 text-yellow-400' ; %>
+                                    <tr class="hover:bg-brand-navy/30">
+                                        <td class="px-6 py-3">
+                                            <%= new Date(r.date).toLocaleDateString() %>
+                                        </td>
+                                        <td class="px-6 py-3 text-white">
+                                            <%= r.first_name %>
+                                                <%= r.last_name %>
+                                        </td>
+                                        <td class="px-6 py-3 font-mono text-brand-cyan">
+                                            <%= r.student_id_code %>
+                                        </td>
+                                        <td class="px-6 py-3">
+                                            <span
+                                                class="px-2.5 py-1 rounded-full text-xs font-medium <%= statusClass %>">
+                                                <%= r.status %>
+                                            </span>
+                                        </td>
+                                    </tr>
+                                    <% } %>
+                                        <% } %>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <% } else { %>
+        <div class="bg-brand-slate rounded-2xl border border-gray-800 p-8 text-center text-gray-500">
+            Select a course to generate a report.
+        </div>
+        <% } %>

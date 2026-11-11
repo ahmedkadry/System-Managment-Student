@@ -1,0 +1,87 @@
+<div class="mb-6">
+    <a href="/teachers" class="text-gray-400 hover:text-white flex items-center gap-2 text-sm mb-2">
+        <i data-lucide="arrow-left" class="w-4 h-4"></i> Back
+    </a>
+    <h2 class="text-2xl font-bold text-white">
+        <%= teacher ? 'Edit Teacher' : 'Add Teacher' %>
+    </h2>
+</div>
+
+<div class="bg-brand-slate rounded-2xl border border-gray-800 p-6 md:p-8 max-w-4xl">
+    <form action="<%= action %>" method="POST" class="space-y-6">
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+                <label class="block text-sm text-gray-300 mb-1">First Name *</label>
+                <input type="text" name="first_name" required value="<%= teacher ? teacher.first_name : '' %>"
+                    class="w-full bg-brand-navy border border-gray-700 rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-brand-violet">
+            </div>
+            <div>
+                <label class="block text-sm text-gray-300 mb-1">Last Name *</label>
+                <input type="text" name="last_name" required value="<%= teacher ? teacher.last_name : '' %>"
+                    class="w-full bg-brand-navy border border-gray-700 rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-brand-violet">
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+                <label class="block text-sm text-gray-300 mb-1">Email *</label>
+                <input type="email" name="email" required value="<%= teacher ? teacher.email : '' %>"
+                    class="w-full bg-brand-navy border border-gray-700 rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-brand-violet">
+            </div>
+            <div>
+                <label class="block text-sm text-gray-300 mb-1">
+                    <%= teacher ? 'New Password (leave blank to keep)' : 'Password *' %>
+                </label>
+                <input type="password" name="password" <%=teacher ? '' : 'required' %> minlength="6"
+                placeholder="••••••••"
+                class="w-full bg-brand-navy border border-gray-700 rounded-lg px-4 py-2.5 text-white focus:outline-none
+                focus:border-brand-violet">
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+                <label class="block text-sm text-gray-300 mb-1">Phone</label>
+                <input type="text" name="phone" value="<%= teacher && teacher.phone ? teacher.phone : '' %>"
+                    class="w-full bg-brand-navy border border-gray-700 rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-brand-violet">
+            </div>
+            <div>
+                <label class="block text-sm text-gray-300 mb-1">Hire Date *</label>
+                <input type="date" name="hire_date" required
+                    value="<%= teacher ? new Date(teacher.hire_date).toISOString().split('T')[0] : new Date().toISOString().split('T')[0] %>"
+                    class="w-full bg-brand-navy border border-gray-700 rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-brand-violet [color-scheme:dark]">
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div>
+                <label class="block text-sm text-gray-300 mb-1">Department</label>
+                <select name="department_id"
+                    class="w-full bg-brand-navy border border-gray-700 rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-brand-violet">
+                    <option value="">Select department</option>
+                    <% for (const d of departments) { %>
+                        <option value="<%= d.id %>" <%=teacher && teacher.department_id===d.id ? 'selected' : '' %>><%=
+                                d.name %>
+                        </option>
+                        <% } %>
+                </select>
+            </div>
+            <div>
+                <label class="block text-sm text-gray-300 mb-1">Specialization</label>
+                <input type="text" name="specialization"
+                    value="<%= teacher && teacher.specialization ? teacher.specialization : '' %>"
+                    placeholder="e.g. Data Science"
+                    class="w-full bg-brand-navy border border-gray-700 rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-brand-violet">
+            </div>
+        </div>
+
+        <div class="flex justify-end gap-4 border-t border-gray-800 pt-6">
+            <a href="/teachers" class="px-6 py-2.5 rounded-lg text-gray-300 hover:bg-gray-800">Cancel</a>
+            <button type="submit"
+                class="bg-brand-violet hover:bg-violet-600 text-white px-6 py-2.5 rounded-lg font-medium shadow-glow-violet">
+                <%= teacher ? 'Update Teacher' : 'Create Teacher' %>
+            </button>
+        </div>
+    </form>
+</div>

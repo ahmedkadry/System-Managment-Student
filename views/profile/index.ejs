@@ -1,0 +1,110 @@
+<div class="mb-6">
+    <h2 class="text-2xl font-bold text-white">My Profile</h2>
+    <p class="text-gray-400 text-sm">Manage your account details</p>
+</div>
+
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+
+    <!-- Profile Card -->
+    <div class="lg:col-span-1">
+        <div class="bg-brand-slate rounded-2xl border border-gray-800 p-6 text-center">
+            <img src="<%= avatar %>"
+                class="w-24 h-24 rounded-full object-cover border-4 border-brand-violet mx-auto mb-4" alt="">
+            <h3 class="text-xl font-bold text-white">
+                <%= displayName %>
+            </h3>
+            <p class="text-sm text-gray-400 mt-1">
+                <%= user.email %>
+            </p>
+            <span
+                class="inline-block mt-3 px-3 py-1 rounded-full bg-brand-violet/20 text-brand-violet text-xs font-medium">
+                <%= user.role_name %>
+            </span>
+
+            <div class="border-t border-gray-800 mt-5 pt-5 text-left space-y-3">
+                <div>
+                    <p class="text-xs text-gray-500">Account Created</p>
+                    <p class="text-sm text-white mt-0.5">
+                        <%= createdDate %>
+                    </p>
+                </div>
+                <div>
+                    <p class="text-xs text-gray-500">User ID</p>
+                    <p class="text-sm text-white font-mono mt-0.5">#<%= user.id %>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Right column -->
+    <div class="lg:col-span-2 space-y-6">
+
+        <!-- Linked Profile Info -->
+        <% if (linked) { %>
+            <div class="bg-brand-slate rounded-2xl border border-gray-800 p-6">
+                <h3 class="text-lg font-semibold text-white mb-4">Profile Details</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <p class="text-xs text-gray-500">Full Name</p>
+                        <p class="text-sm text-white mt-0.5">
+                            <%= linked.first_name %>
+                                <%= linked.last_name %>
+                        </p>
+                    </div>
+                    <div>
+                        <p class="text-xs text-gray-500">ID Code</p>
+                        <p class="text-sm text-brand-cyan font-mono mt-0.5">
+                            <%= linked.student_id_code || linked.teacher_id_code %>
+                        </p>
+                    </div>
+                    <div>
+                        <p class="text-xs text-gray-500">Phone</p>
+                        <p class="text-sm text-white mt-0.5">
+                            <%= linked.phone || '—' %>
+                        </p>
+                    </div>
+                    <div>
+                        <p class="text-xs text-gray-500">Status</p>
+                        <p class="text-sm text-white mt-0.5">
+                            <%= linked.status %>
+                        </p>
+                    </div>
+                </div>
+            </div>
+            <% } %>
+
+                <!-- Change Password -->
+                <div class="bg-brand-slate rounded-2xl border border-gray-800 p-6">
+                    <h3 class="text-lg font-semibold text-white mb-4">Change Password</h3>
+                    <form action="/profile/password" method="POST" class="space-y-4">
+                        <div>
+                            <label class="block text-sm text-gray-300 mb-1">Current Password *</label>
+                            <input type="password" name="current_password" required
+                                class="w-full bg-brand-navy border border-gray-700 rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-brand-violet"
+                                placeholder="Enter current password">
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div>
+                                <label class="block text-sm text-gray-300 mb-1">New Password *</label>
+                                <input type="password" name="new_password" required minlength="6"
+                                    class="w-full bg-brand-navy border border-gray-700 rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-brand-violet"
+                                    placeholder="Min 6 characters">
+                            </div>
+                            <div>
+                                <label class="block text-sm text-gray-300 mb-1">Confirm New Password *</label>
+                                <input type="password" name="confirm_password" required minlength="6"
+                                    class="w-full bg-brand-navy border border-gray-700 rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-brand-violet"
+                                    placeholder="Repeat new password">
+                            </div>
+                        </div>
+                        <div class="flex justify-end pt-2">
+                            <button type="submit"
+                                class="bg-brand-violet hover:bg-violet-600 text-white px-6 py-2.5 rounded-lg font-medium shadow-glow-violet">
+                                Update Password
+                            </button>
+                        </div>
+                    </form>
+                </div>
+    </div>
+</div>

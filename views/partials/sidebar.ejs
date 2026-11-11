@@ -1,0 +1,108 @@
+<div id="sidebarBackdrop" class="fixed inset-0 bg-black/60 z-40 hidden md:hidden transition-opacity"
+    onclick="closeSidebar()"></div>
+
+<aside id="sidebar"
+    class="w-64 bg-brand-slate border-r border-gray-800 flex flex-col h-full flex-shrink-0 fixed md:relative inset-y-0 left-0 z-50 -translate-x-full md:translate-x-0 transition-transform duration-300 ease-in-out">
+
+    <div class="h-20 flex items-center px-6 border-b border-gray-800">
+        <a href="/dashboard" class="flex items-center gap-2">
+            <div
+                class="w-8 h-8 rounded-lg bg-gradient-to-br from-brand-violet to-brand-cyan flex items-center justify-center">
+                <i data-lucide="graduation-cap" class="text-white w-5 h-5"></i>
+            </div>
+            <span class="text-xl font-bold text-white tracking-tight">EduManage</span>
+        </a>
+    </div>
+
+    <nav class="flex-1 px-4 py-6 space-y-1.5 overflow-y-auto">
+
+        <% if (sidebar.canDashboard) { %>
+            <a href="/dashboard" class="<%= sidebar.dashLink %>">
+                <i data-lucide="layout-dashboard" class="<%= sidebar.dashIcon %>"></i>
+                <span class="text-sm">Dashboard</span>
+            </a>
+            <% } %>
+
+                <% if (sidebar.canManage) { %>
+                    <a href="/students" class="<%= sidebar.studentsLink %>">
+                        <i data-lucide="users" class="<%= sidebar.studentsIcon %>"></i>
+                        <span class="text-sm">Students</span>
+                    </a>
+                    <a href="/teachers" class="<%= sidebar.teachersLink %>">
+                        <i data-lucide="briefcase" class="<%= sidebar.teachersIcon %>"></i>
+                        <span class="text-sm">Teachers</span>
+                    </a>
+                    <a href="/courses" class="<%= sidebar.coursesLink %>">
+                        <i data-lucide="book-open" class="<%= sidebar.coursesIcon %>"></i>
+                        <span class="text-sm">Courses</span>
+                    </a>
+                    <% } %>
+
+                        <% if (sidebar.canStaff) { %>
+                            <a href="/attendance" class="<%= sidebar.attendanceLink %>">
+                                <i data-lucide="calendar-check" class="<%= sidebar.attendanceIcon %>"></i>
+                                <span class="text-sm">Attendance</span>
+                            </a>
+                            <a href="/exams" class="<%= sidebar.examsLink %>">
+                                <i data-lucide="clipboard-list" class="<%= sidebar.examsIcon %>"></i>
+                                <span class="text-sm">Exams</span>
+                            </a>
+                            <a href="/reports" class="<%= sidebar.reportsLink %>">
+                                <i data-lucide="bar-chart-2" class="<%= sidebar.reportsIcon %>"></i>
+                                <span class="text-sm">Reports</span>
+                            </a>
+                            <% } %>
+
+                                <div class="border-t border-gray-800 my-3"></div>
+
+                                <a href="/profile" class="<%= sidebar.profileLink %>">
+                                    <i data-lucide="user" class="<%= sidebar.profileIcon %>"></i>
+                                    <span class="text-sm">My Profile</span>
+                                </a>
+    </nav>
+
+    <div class="p-4 border-t border-gray-800 space-y-2">
+        <div class="flex items-center gap-3 px-2 py-2">
+            <div
+                class="w-9 h-9 rounded-full bg-gradient-to-br from-brand-violet to-brand-cyan flex items-center justify-center text-white font-bold text-sm flex-shrink-0">
+                <%= sidebar.initial %>
+            </div>
+            <div class="min-w-0 flex-1">
+                <p class="text-sm font-medium text-white truncate">
+                    <%= sidebar.email %>
+                </p>
+                <p class="text-xs text-brand-cyan">
+                    <%= sidebar.role %>
+                </p>
+            </div>
+        </div>
+        <a href="/logout"
+            class="flex items-center gap-3 px-4 py-2.5 text-red-400 hover:text-white hover:bg-red-500/20 rounded-xl transition-colors">
+            <i data-lucide="log-out" class="w-4 h-4"></i>
+            <span class="text-sm">Logout</span>
+        </a>
+    </div>
+</aside>
+
+<script>
+    function openSidebar() {
+        var s = document.getElementById('sidebar');
+        var b = document.getElementById('sidebarBackdrop');
+        if (s) s.classList.remove('-translate-x-full');
+        if (b) b.classList.remove('hidden');
+    }
+    function closeSidebar() {
+        var s = document.getElementById('sidebar');
+        var b = document.getElementById('sidebarBackdrop');
+        if (s) s.classList.add('-translate-x-full');
+        if (b) b.classList.add('hidden');
+    }
+    document.addEventListener('click', function (e) {
+        var link = e.target.closest('a');
+        if (!link) return;
+        if (link.closest('#sidebar') && window.innerWidth < 768) {
+            closeSidebar();
+        }
+    });
+    if (window.lucide) lucide.createIcons();
+</script>

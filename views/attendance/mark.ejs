@@ -1,0 +1,90 @@
+<div class="mb-6">
+    <a href="/attendance" class="text-gray-400 hover:text-white flex items-center gap-2 text-sm mb-2">
+        <i data-lucide="arrow-left" class="w-4 h-4"></i> Back
+    </a>
+    <h2 class="text-2xl font-bold text-white">Mark Attendance</h2>
+    <p class="text-gray-400 text-sm">
+        <%= course.course_code %> — <%= course.name %> • <%= new Date(date).toLocaleDateString() %>
+    </p>
+</div>
+
+<% if (!students || students.length===0) { %>
+    <div class="bg-brand-slate rounded-2xl border border-gray-800 p-8 text-center">
+        <i data-lucide="user-x" class="w-12 h-12 mx-auto text-gray-500 mb-3"></i>
+        <p class="text-gray-400">No students enrolled in this course.</p>
+        <a href="/courses/<%= course.id %>" class="inline-block mt-4 text-brand-violet hover:underline">Enroll students
+            →</a>
+    </div>
+    <% } else { %>
+        <div class="bg-brand-slate rounded-2xl border border-gray-800 overflow-hidden">
+            <form action="/attendance/save" method="POST">
+                <input type="hidden" name="course_id" value="<%= course.id %>">
+                <input type="hidden" name="date" value="<%= date %>">
+
+                <div class="overflow-x-auto">
+                    <table class="w-full text-left text-sm text-gray-400">
+                        <thead class="text-xs uppercase bg-brand-navy/50 border-b border-gray-800">
+                            <tr>
+                                <th class="px-6 py-3">Student</th>
+                                <th class="px-6 py-3 text-center">Present</th>
+                                <th class="px-6 py-3 text-center">Absent</th>
+                                <th class="px-6 py-3 text-center">Late</th>
+                                <th class="px-6 py-3 text-center">Excused</th>
+                            </tr>
+                        </thead>
+                        <tbody class="divide-y divide-gray-800">
+                            <% for (const s of students) { %>
+                                <% const current=s.attendance_status || 'Present' ; %>
+                                    <tr class="hover:bg-brand-navy/30">
+                                        <td class="px-6 py-3">
+                                            <div class="flex items-center gap-3">
+                                                <img src="/<%= s.profile_photo %>"
+                                                    class="w-8 h-8 rounded-full object-cover border border-gray-700"
+                                                    alt="">
+                                                <div>
+                                                    <div class="text-white">
+                                                        <%= s.first_name %>
+                                                            <%= s.last_name %>
+                                                    </div>
+                                                    <div class="text-xs text-brand-cyan font-mono">
+                                                        <%= s.student_id_code %>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="px-6 py-3 text-center">
+                                            <input type="radio" name="attendance[<%= s.id %>]" value="Present"
+                                                <%=current==='Present' ? 'checked' : '' %> class="w-4 h-4
+                                            accent-brand-violet">
+                                        </td>
+                                        <td class="px-6 py-3 text-center">
+                                            <input type="radio" name="attendance[<%= s.id %>]" value="Absent"
+                                                <%=current==='Absent' ? 'checked' : '' %> class="w-4 h-4
+                                            accent-red-500">
+                                        </td>
+                                        <td class="px-6 py-3 text-center">
+                                            <input type="radio" name="attendance[<%= s.id %>]" value="Late"
+                                                <%=current==='Late' ? 'checked' : '' %> class="w-4 h-4
+                                            accent-yellow-500">
+                                        </td>
+                                        <td class="px-6 py-3 text-center">
+                                            <input type="radio" name="attendance[<%= s.id %>]" value="Excused"
+                                                <%=current==='Excused' ? 'checked' : '' %> class="w-4 h-4
+                                            accent-blue-500">
+                                        </td>
+                                    </tr>
+                                    <% } %>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="p-4 border-t border-gray-800 flex justify-end gap-3">
+                    <a href="/attendance" class="px-6 py-2.5 rounded-lg text-gray-300 hover:bg-gray-800">Cancel</a>
+                    <button type="submit"
+                        class="bg-brand-violet hover:bg-violet-600 text-white px-6 py-2.5 rounded-lg font-medium shadow-glow-violet">
+                        Save Attendance
+                    </button>
+                </div>
+            </form>
+        </div>
+        <% } %>

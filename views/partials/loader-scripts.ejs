@@ -1,0 +1,65 @@
+<script>
+    (function () {
+        var bar = document.getElementById('topProgress');
+        var overlay = document.getElementById('globalLoader');
+        var timer = null;
+
+        function startProgress() {
+            if (!bar) return;
+            clearInterval(timer);
+            bar.classList.remove('opacity-0');
+            bar.style.width = '15%';
+            var w = 15;
+            timer = setInterval(function () {
+                w = Math.min(w + Math.random() * 10, 90);
+                bar.style.width = w + '%';
+            }, 200);
+        }
+
+        function completeProgress() {
+            if (!bar) return;
+            clearInterval(timer);
+            bar.style.width = '100%';
+            setTimeout(function () {
+                bar.classList.add('opacity-0');
+                setTimeout(function () { bar.style.width = '0%'; }, 300);
+            }, 250);
+        }
+
+        function showLoader() {
+            if (!overlay) return;
+            overlay.classList.remove('opacity-0', 'pointer-events-none');
+            overlay.classList.add('opacity-100');
+        }
+
+        function hideLoader() {
+            if (!overlay) return;
+            overlay.classList.add('opacity-0', 'pointer-events-none');
+            overlay.classList.remove('opacity-100');
+        }
+
+        document.addEventListener('click', function (e) {
+            var link = e.target.closest('a');
+            if (!link) return;
+            var href = link.getAttribute('href');
+            if (!href || href.charAt(0) === '#' || href.indexOf('javascript:') === 0 ||
+                href.indexOf('mailto:') === 0 || link.target === '_blank' ||
+                link.dataset.noLoader === 'true') return;
+            startProgress();
+        });
+
+        document.addEventListener('submit', function (e) {
+            var form = e.target;
+            if (form.dataset.noLoader === 'true') return;
+            showLoader();
+            if (bar) { bar.classList.remove('opacity-0'); bar.style.width = '100%'; }
+        });
+
+        window.addEventListener('pageshow', function () {
+            hideLoader();
+            completeProgress();
+        });
+
+        window.Loader = { show: showLoader, hide: hideLoader, start: startProgress, done: completeProgress };
+    })();
+</script>

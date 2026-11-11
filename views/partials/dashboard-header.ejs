@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <title>
+        <%= title %>
+    </title>
+    <!-- same CDN links as above -->
+</head>
+
+<body class="bg-brand-navy text-gray-300 antialiased flex h-screen overflow-hidden">
+    <%- include('../partials/sidebar') %>
+        <div class="flex-1 flex flex-col h-screen overflow-hidden">
+            <%- include('../partials/topbar') %>
+                <main class="flex-1 overflow-y-auto bg-brand-navy p-6">

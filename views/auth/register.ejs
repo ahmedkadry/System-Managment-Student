@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        <%= typeof title !=='undefined' ? title : 'Register' %>
+    </title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: { brand: { navy: '#0B0F19', slate: '#1E293B', violet: '#8B5CF6', cyan: '#06B6D4' } },
+                    boxShadow: { 'glow-violet': '0 0 20px -5px rgba(139, 92, 246, 0.5)' }
+                }
+            }
+        }
+    </script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+    </style>
+</head>
+
+<body
+    class="bg-brand-navy min-h-screen flex items-center justify-center p-4 py-12 selection:bg-brand-violet selection:text-white">
+
+    <div
+        class="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-brand-violet/20 blur-[100px] rounded-full pointer-events-none">
+    </div>
+
+    <div class="w-full max-w-lg bg-brand-slate border border-gray-700 rounded-2xl p-8 shadow-2xl relative z-10">
+        <div class="text-center mb-8">
+            <div
+                class="w-12 h-12 mx-auto bg-gradient-to-br from-brand-violet to-brand-cyan rounded-xl flex items-center justify-center mb-4 shadow-glow-violet">
+                <svg class="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
+                </svg>
+            </div>
+            <h2 class="text-2xl font-bold text-white">Create an Account</h2>
+            <p class="text-gray-400 text-sm mt-2">Join EduManage as a Student or Teacher</p>
+        </div>
+
+        <form action="/register" method="POST" class="space-y-4">
+
+            <!-- Role Selection -->
+            <div>
+                <label class="block text-sm font-medium text-gray-300 mb-1">I am a...</label>
+                <select name="role" required
+                    class="w-full bg-brand-navy border border-gray-600 rounded-lg px-4 py-2.5 text-white focus:outline-none focus:border-brand-violet focus:ring-1 focus:ring-brand-violet transition-colors">
+                    <option value="Student" <%=(typeof old !=='undefined' && old.role==='Student' ) ? 'selected' : '' %>
+                        >Student</option>
+                    <option value="Teacher" <%=(typeof old !=='undefined' && old.role==='Teacher' ) ? 'selected' : '' %>
+                        >Teacher</option>
+                </select>
+            </div>
+
+            <!-- Name Fields -->
+            <div class="grid grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-300 mb-1">First Name</label>
+                    <input type="text" name="firstName" required
+                        value="<%= typeof old !== 'undefined' ? old.firstName : '' %>"
+                        class="w-full bg-brand-navy border border-gray-600 rounded-lg px-4 py-2.5 text-white placeholder-gray-500 focus:outline-none focus:border-brand-violet focus:ring-1 focus:ring-brand-violet transition-colors"
+                        placeholder="John">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-300 mb-1">Last Name</label>
+                    <input type="text" name="lastName" required
+                        value="<%= typeof old !== 'undefined' ? old.lastName : '' %>"
+                        class="w-full bg-brand-navy border border-gray-600 rounded-lg px-4 py-2.5 text-white placeholder-gray-500 focus:outline-none focus:border-brand-violet focus:ring-1 focus:ring-brand-violet transition-colors"
+                        placeholder="Doe">
+                </div>
+            </div>
+
+            <!-- Email -->
+            <div>
+                <label class="block text-sm font-medium text-gray-300 mb-1">Email Address</label>
+                <input type="email" name="email" required value="<%= typeof old !== 'undefined' ? old.email : '' %>"
+                    class="w-full bg-brand-navy border border-gray-600 rounded-lg px-4 py-2.5 text-white placeholder-gray-500 focus:outline-none focus:border-brand-violet focus:ring-1 focus:ring-brand-violet transition-colors"
+                    placeholder="john.doe@example.com">
+            </div>
+
+            <!-- Passwords -->
+            <div class="grid grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-300 mb-1">Password</label>
+                    <input type="password" name="password" required minlength="6"
+                        class="w-full bg-brand-navy border border-gray-600 rounded-lg px-4 py-2.5 text-white placeholder-gray-500 focus:outline-none focus:border-brand-violet focus:ring-1 focus:ring-brand-violet transition-colors"
+                        placeholder="••••••••">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-300 mb-1">Confirm Password</label>
+                    <input type="password" name="confirmPassword" required minlength="6"
+                        class="w-full bg-brand-navy border border-gray-600 rounded-lg px-4 py-2.5 text-white placeholder-gray-500 focus:outline-none focus:border-brand-violet focus:ring-1 focus:ring-brand-violet transition-colors"
+                        placeholder="••••••••">
+                </div>
+            </div>
+
+            <button type="submit"
+                class="w-full bg-brand-violet hover:bg-violet-600 text-white font-bold py-2.5 rounded-lg transition-colors shadow-glow-violet mt-4">
+                Create Account
+            </button>
+        </form>
+
+        <div class="mt-6 text-center">
+            <p class="text-sm text-gray-400">Already have an account? <a href="/login"
+                    class="text-brand-cyan hover:underline">Sign in</a></p>
+            <a href="/" class="inline-block mt-3 text-sm text-gray-500 hover:text-gray-300 transition-colors">← Back to
+                Home</a>
+        </div>
+    </div>
+
+    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const Toast = Swal.mixin({
+                toast: true, position: 'top-end', showConfirmButton: false, timer: 3000, timerProgressBar: true,
+                background: '#1E293B', color: '#F8FAFC'
+            });
+
+            const errors = <% - JSON.stringify(locals.error_msg || []) %>;
+            const successes = <% - JSON.stringify(locals.success_msg || []) %>;
+
+            if (errors && errors.length > 0) Toast.fire({ icon: 'error', title: errors[0] });
+            if (successes && successes.length > 0) Toast.fire({ icon: 'success', title: successes[0] });
+        });
+    </script>
+</body>
+
+</html>

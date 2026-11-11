@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>
+        <%= title %>
+    </title>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: { navy: '#0B0F19', slate: '#1E293B', violet: '#8B5CF6', cyan: '#06B6D4' }
+                    },
+                    boxShadow: { 'glow-violet': '0 0 20px -5px rgba(139, 92, 246, 0.5)' }
+                }
+            }
+        }
+    </script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+    </style>
+</head>
+
+<body
+    class="bg-brand-navy min-h-screen flex items-center justify-center p-4 selection:bg-brand-violet selection:text-white">
+
+    <div
+        class="absolute top-0 left-1/2 -translate-x-1/2 w-[700px] h-[350px] bg-brand-violet/20 blur-[120px] rounded-full pointer-events-none">
+    </div>
+
+    <div class="w-full max-w-md bg-brand-slate border border-gray-800 rounded-2xl p-8 shadow-2xl relative z-10">
+
+        <div class="text-center mb-8">
+            <div
+                class="w-14 h-14 mx-auto bg-gradient-to-br from-brand-violet to-brand-cyan rounded-xl flex items-center justify-center mb-4 shadow-glow-violet">
+                <i data-lucide="graduation-cap" class="text-white w-7 h-7"></i>
+            </div>
+            <h2 class="text-2xl font-bold text-white">Welcome Back</h2>
+            <p class="text-gray-400 text-sm mt-1">Sign in to your EduManage account</p>
+        </div>
+
+        <form action="/login" method="POST" class="space-y-5">
+
+            <div>
+                <label for="email" class="block text-sm font-medium text-gray-300 mb-1">Email Address</label>
+                <div class="relative">
+                    <i data-lucide="mail" class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 w-4 h-4"></i>
+                    <input id="email" type="email" name="email" required autocomplete="email" autofocus
+                        class="w-full bg-brand-navy border border-gray-700 rounded-lg pl-10 pr-4 py-2.5 text-white placeholder-gray-500 focus:outline-none focus:border-brand-violet focus:ring-1 focus:ring-brand-violet transition-colors"
+                        placeholder="admin@edumanage.com">
+                </div>
+            </div>
+
+            <div>
+                <div class="flex justify-between items-center mb-1">
+                    <label for="password" class="block text-sm font-medium text-gray-300">Password</label>
+                    <a href="#" class="text-xs text-brand-cyan hover:underline">Forgot password?</a>
+                </div>
+                <div class="relative">
+                    <i data-lucide="lock" class="absolute left-3 top-1/2 -translate-y-1/2 text-gray-500 w-4 h-4"></i>
+                    <input id="password" type="password" name="password" required autocomplete="current-password"
+                        class="w-full bg-brand-navy border border-gray-700 rounded-lg pl-10 pr-10 py-2.5 text-white placeholder-gray-500 focus:outline-none focus:border-brand-violet focus:ring-1 focus:ring-brand-violet transition-colors"
+                        placeholder="••••••••">
+                    <button type="button" onclick="togglePassword()"
+                        class="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-gray-300">
+                        <i id="eyeIcon" data-lucide="eye" class="w-4 h-4"></i>
+                    </button>
+                </div>
+                <div class="flex items-center justify-between">
+                    <label class="flex items-center gap-2 cursor-pointer text-sm text-gray-400">
+                        <input type="checkbox" name="remember" class="w-4 h-4 accent-brand-violet rounded">
+                        Keep me signed in for 30 days
+                    </label>
+                    <a href="#" class="text-xs text-brand-cyan hover:underline">Forgot password?</a>
+                </div>
+            </div>
+
+            <button type="submit" id="submitBtn"
+                class="w-full bg-brand-violet hover:bg-violet-600 text-white font-semibold py-2.5 rounded-lg transition-colors shadow-glow-violet">
+                Sign In
+            </button>
+        </form>
+
+        <div class="mt-6 pt-6 border-t border-gray-800 text-center">
+            <p class="text-sm text-gray-400">
+                Don't have an account?
+                <a href="/register" class="text-brand-cyan hover:underline font-medium">Register here</a>
+            </p>
+            <a href="/" class="inline-block mt-3 text-xs text-gray-500 hover:text-gray-300 transition-colors">← Back to
+                Home</a>
+        </div>
+    </div>
+
+    <script>
+        if (window.lucide) lucide.createIcons();
+
+        const flashErrors = <% - JSON.stringify(error_msg) %>;
+        const flashSuccesses = <% - JSON.stringify(success_msg) %>;
+
+        const Toast = Swal.mixin({
+            toast: true, position: 'top-end', showConfirmButton: false, timer: 3500,
+            timerProgressBar: true, background: '#1E293B', color: '#F8FAFC'
+        });
+        if (flashErrors.length > 0) Toast.fire({ icon: 'error', title: flashErrors[0] });
+        if (flashSuccesses.length > 0) Toast.fire({ icon: 'success', title: flashSuccesses[0] });
+
+        function togglePassword() {
+            const input = document.getElementById('password');
+            const icon = document.getElementById('eyeIcon');
+            if (input.type === 'password') {
+                input.type = 'text';
+                icon.setAttribute('data-lucide', 'eye-off');
+            } else {
+                input.type = 'password';
+                icon.setAttribute('data-lucide', 'eye');
+            }
+            if (window.lucide) lucide.createIcons();
+        }
+
+        document.querySelector('form').addEventListener('submit', function () {
+            const btn = document.getElementById('submitBtn');
+            btn.disabled = true;
+            btn.innerHTML = 'Signing in...';
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,356 @@
+<!-- HEADER -->
+<div class="mb-8 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+    <div>
+        <h1 class="text-3xl font-bold text-white tracking-tight">Dashboard</h1>
+        <p class="text-gray-400 text-sm mt-1">
+            Welcome back, <span class="text-brand-cyan font-medium">
+                <%= displayName %>
+            </span>.
+            Here's your school at a glance.
+        </p>
+    </div>
+    <div class="flex items-center gap-2">
+        <a href="/attendance"
+            class="bg-gray-800 hover:bg-gray-700 text-white px-4 py-2 rounded-lg text-sm border border-gray-700 flex items-center gap-2">
+            <i data-lucide="calendar-check" class="w-4 h-4"></i> Take Attendance
+        </a>
+        <a href="/students/create"
+            class="bg-brand-violet hover:bg-violet-600 text-white px-4 py-2 rounded-lg text-sm font-medium flex items-center gap-2 shadow-glow-violet">
+            <i data-lucide="user-plus" class="w-4 h-4"></i> Add Student
+        </a>
+    </div>
+</div>
+
+<!-- STAT CARDS -->
+<div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5 mb-6">
+    <a href="/students"
+        class="bg-brand-slate p-6 rounded-2xl border border-gray-800 hover:border-brand-violet/60 transition-all group relative overflow-hidden">
+        <div
+            class="absolute -top-8 -right-8 w-24 h-24 bg-brand-violet/10 rounded-full blur-2xl group-hover:bg-brand-violet/20 transition-colors">
+        </div>
+        <div class="flex justify-between items-start relative">
+            <div>
+                <p class="text-gray-400 text-xs uppercase tracking-wider font-medium">Total Students</p>
+                <h3 class="text-3xl font-bold text-white mt-2">
+                    <%= stats.students %>
+                </h3>
+                <p class="text-xs text-gray-500 mt-1">
+                    <span class="text-green-400">
+                        <%= stats.activeStudents %> active
+                    </span>
+                    &middot;
+                    <span>
+                        <%= stats.graduatedStudents %> graduated
+                    </span>
+                </p>
+            </div>
+            <div class="p-3 bg-brand-violet/20 rounded-xl group-hover:scale-110 transition-transform">
+                <i data-lucide="users" class="text-brand-violet w-6 h-6"></i>
+            </div>
+        </div>
+    </a>
+
+    <a href="/teachers"
+        class="bg-brand-slate p-6 rounded-2xl border border-gray-800 hover:border-brand-cyan/60 transition-all group relative overflow-hidden">
+        <div
+            class="absolute -top-8 -right-8 w-24 h-24 bg-brand-cyan/10 rounded-full blur-2xl group-hover:bg-brand-cyan/20 transition-colors">
+        </div>
+        <div class="flex justify-between items-start relative">
+            <div>
+                <p class="text-gray-400 text-xs uppercase tracking-wider font-medium">Teachers</p>
+                <h3 class="text-3xl font-bold text-white mt-2">
+                    <%= stats.teachers %>
+                </h3>
+                <p class="text-xs text-gray-500 mt-1">Active teaching staff</p>
+            </div>
+            <div class="p-3 bg-brand-cyan/20 rounded-xl group-hover:scale-110 transition-transform">
+                <i data-lucide="briefcase" class="text-brand-cyan w-6 h-6"></i>
+            </div>
+        </div>
+    </a>
+
+    <a href="/courses"
+        class="bg-brand-slate p-6 rounded-2xl border border-gray-800 hover:border-purple-500/60 transition-all group relative overflow-hidden">
+        <div
+            class="absolute -top-8 -right-8 w-24 h-24 bg-purple-500/10 rounded-full blur-2xl group-hover:bg-purple-500/20 transition-colors">
+        </div>
+        <div class="flex justify-between items-start relative">
+            <div>
+                <p class="text-gray-400 text-xs uppercase tracking-wider font-medium">Courses</p>
+                <h3 class="text-3xl font-bold text-white mt-2">
+                    <%= stats.courses %>
+                </h3>
+                <p class="text-xs text-gray-500 mt-1">
+                    <%= stats.enrollments %> total enrollments
+                </p>
+            </div>
+            <div class="p-3 bg-purple-500/20 rounded-xl group-hover:scale-110 transition-transform">
+                <i data-lucide="book-open" class="text-purple-400 w-6 h-6"></i>
+            </div>
+        </div>
+    </a>
+
+    <a href="/attendance/reports"
+        class="bg-brand-slate p-6 rounded-2xl border border-gray-800 hover:border-green-500/60 transition-all group relative overflow-hidden">
+        <div
+            class="absolute -top-8 -right-8 w-24 h-24 bg-green-500/10 rounded-full blur-2xl group-hover:bg-green-500/20 transition-colors">
+        </div>
+        <div class="flex justify-between items-start relative">
+            <div>
+                <p class="text-gray-400 text-xs uppercase tracking-wider font-medium">Attendance</p>
+                <h3 class="text-3xl font-bold text-white mt-2">
+                    <%= stats.attendanceRate %>%
+                </h3>
+                <p class="text-xs text-gray-500 mt-1">Last 30 days</p>
+            </div>
+            <div class="p-3 bg-green-500/20 rounded-xl group-hover:scale-110 transition-transform">
+                <i data-lucide="trending-up" class="text-green-400 w-6 h-6"></i>
+            </div>
+        </div>
+    </a>
+</div>
+
+<!-- CHARTS ROW -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+    <div class="lg:col-span-2 bg-brand-slate p-6 rounded-2xl border border-gray-800 shadow-lg">
+        <div class="flex justify-between items-center mb-4">
+            <div>
+                <h3 class="text-lg font-semibold text-white">Enrollment Trends</h3>
+                <p class="text-xs text-gray-500">New student registrations</p>
+            </div>
+            <span class="text-xs text-gray-500 bg-brand-navy px-2 py-1 rounded border border-gray-700">Last 6
+                months</span>
+        </div>
+        <div class="h-72 relative"><canvas id="enrollmentChart"></canvas></div>
+    </div>
+
+    <div class="bg-brand-slate p-6 rounded-2xl border border-gray-800 shadow-lg">
+        <div class="flex justify-between items-center mb-4">
+            <div>
+                <h3 class="text-lg font-semibold text-white">Attendance</h3>
+                <p class="text-xs text-gray-500">Last 30 days</p>
+            </div>
+        </div>
+        <div class="h-72 relative"><canvas id="attendanceChart"></canvas></div>
+    </div>
+</div>
+
+<!-- RECENT STUDENTS + ACTIVITY -->
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+    <div class="bg-brand-slate p-6 rounded-2xl border border-gray-800 shadow-lg">
+        <div class="flex justify-between items-center mb-4">
+            <h3 class="text-lg font-semibold text-white">Recent Students</h3>
+            <a href="/students" class="text-xs text-brand-cyan hover:underline">View all →</a>
+        </div>
+
+        <% if (studentRows.length===0) { %>
+            <div class="text-center py-8">
+                <i data-lucide="user-plus" class="w-10 h-10 mx-auto text-gray-600 mb-2"></i>
+                <p class="text-gray-500 text-sm">No students yet.</p>
+                <a href="/students/create" class="inline-block mt-3 text-brand-violet hover:underline text-sm">Add your
+                    first student →</a>
+            </div>
+            <% } else { %>
+                <div class="space-y-3">
+                    <% for (const s of studentRows) { %>
+                        <a href="/students/edit/<%= s.id %>"
+                            class="flex items-center gap-3 p-2 rounded-lg hover:bg-brand-navy/40 transition-colors">
+                            <img src="<%= s.avatar %>" alt=""
+                                class="w-10 h-10 rounded-full object-cover border border-gray-700">
+                            <div class="flex-1 min-w-0">
+                                <p class="text-sm font-medium text-white truncate">
+                                    <%= s.name %>
+                                </p>
+                                <p class="text-xs text-gray-500 font-mono">
+                                    <%= s.code %>
+                                </p>
+                            </div>
+                            <span class="px-2 py-0.5 rounded-full text-xs font-medium <%= s.statusClass %>">
+                                <%= s.status %>
+                            </span>
+                        </a>
+                        <% } %>
+                </div>
+                <% } %>
+    </div>
+
+    <div class="bg-brand-slate p-6 rounded-2xl border border-gray-800 shadow-lg">
+        <h3 class="text-lg font-semibold text-white mb-4">Recent Activity</h3>
+
+        <% if (activityRows.length===0) { %>
+            <div class="text-center py-8">
+                <i data-lucide="inbox" class="w-10 h-10 mx-auto text-gray-600 mb-2"></i>
+                <p class="text-gray-500 text-sm">No activity yet.</p>
+            </div>
+            <% } else { %>
+                <div class="space-y-4">
+                    <% for (const a of activityRows) { %>
+                        <div class="flex gap-3 items-start">
+                            <div
+                                class="w-8 h-8 rounded-full bg-brand-violet/20 flex items-center justify-center flex-shrink-0">
+                                <i data-lucide="activity" class="text-brand-violet w-4 h-4"></i>
+                            </div>
+                            <div class="min-w-0 flex-1">
+                                <p class="text-sm text-gray-300 break-words">
+                                    <strong class="text-white">
+                                        <%= a.display %>
+                                    </strong>
+                                    <span class="text-gray-400">
+                                        <%= a.description %>
+                                    </span>
+                                </p>
+                                <p class="text-xs text-gray-500 mt-0.5">
+                                    <%= a.when %>
+                                </p>
+                            </div>
+                        </div>
+                        <% } %>
+                </div>
+                <% } %>
+    </div>
+</div>
+
+<!-- TOP COURSES + DEPARTMENT CHART -->
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+    <div class="bg-brand-slate p-6 rounded-2xl border border-gray-800 shadow-lg">
+        <h3 class="text-lg font-semibold text-white mb-4">Most Popular Courses</h3>
+
+        <% if (courseRows.length===0) { %>
+            <div class="text-center py-8">
+                <i data-lucide="book-open" class="w-10 h-10 mx-auto text-gray-600 mb-2"></i>
+                <p class="text-gray-500 text-sm">No courses yet.</p>
+                <a href="/courses/create" class="inline-block mt-3 text-brand-violet hover:underline text-sm">Create
+                    first course →</a>
+            </div>
+            <% } else { %>
+                <div class="space-y-3">
+                    <% for (const c of courseRows) { %>
+                        <div>
+                            <div class="flex justify-between items-center mb-1">
+                                <div>
+                                    <span class="text-sm text-white font-medium">
+                                        <%= c.name %>
+                                    </span>
+                                    <span class="text-xs text-brand-cyan font-mono ml-2">
+                                        <%= c.code %>
+                                    </span>
+                                </div>
+                                <span class="text-xs text-gray-400">
+                                    <%= c.enrolled %> students
+                                </span>
+                            </div>
+                            <div class="w-full bg-brand-navy rounded-full h-2">
+                                <div class="h-2 rounded-full bg-gradient-to-r from-brand-violet to-brand-cyan"
+                                    style="width: <%= c.pct %>%"></div>
+                            </div>
+                        </div>
+                        <% } %>
+                </div>
+                <% } %>
+    </div>
+
+    <div class="bg-brand-slate p-6 rounded-2xl border border-gray-800 shadow-lg">
+        <h3 class="text-lg font-semibold text-white mb-4">Students by Department</h3>
+        <div class="h-64 relative"><canvas id="departmentChart"></canvas></div>
+    </div>
+</div>
+
+<!-- QUICK ACTIONS -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+    <a href="/students/create"
+        class="bg-brand-slate p-5 rounded-xl border border-gray-800 hover:border-brand-violet transition-colors flex items-center gap-4 group">
+        <div
+            class="w-11 h-11 rounded-lg bg-brand-violet/20 flex items-center justify-center group-hover:scale-110 transition-transform">
+            <i data-lucide="user-plus" class="text-brand-violet w-5 h-5"></i>
+        </div>
+        <div>
+            <p class="text-white font-medium text-sm">Add Student</p>
+            <p class="text-xs text-gray-500">Enroll a new student</p>
+        </div>
+    </a>
+    <a href="/teachers/create"
+        class="bg-brand-slate p-5 rounded-xl border border-gray-800 hover:border-brand-cyan transition-colors flex items-center gap-4 group">
+        <div
+            class="w-11 h-11 rounded-lg bg-brand-cyan/20 flex items-center justify-center group-hover:scale-110 transition-transform">
+            <i data-lucide="briefcase" class="text-brand-cyan w-5 h-5"></i>
+        </div>
+        <div>
+            <p class="text-white font-medium text-sm">Add Teacher</p>
+            <p class="text-xs text-gray-500">Register teaching staff</p>
+        </div>
+    </a>
+    <a href="/courses/create"
+        class="bg-brand-slate p-5 rounded-xl border border-gray-800 hover:border-purple-500 transition-colors flex items-center gap-4 group">
+        <div
+            class="w-11 h-11 rounded-lg bg-purple-500/20 flex items-center justify-center group-hover:scale-110 transition-transform">
+            <i data-lucide="book-open" class="text-purple-400 w-5 h-5"></i>
+        </div>
+        <div>
+            <p class="text-white font-medium text-sm">Add Course</p>
+            <p class="text-xs text-gray-500">Create a new course</p>
+        </div>
+    </a>
+</div>
+
+<!-- CHART SCRIPTS -->
+<script>
+    window.__chartEnrollment = <% - chartEnrollment %>;
+    window.__chartDepartment = <% - chartDepartment %>;
+    window.__chartAttendance = <% - chartAttendance %>;
+</script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var VIOLET = '#8B5CF6', CYAN = '#06B6D4', GREEN = '#22C55E', YELLOW = '#EAB308', RED = '#EF4444', BLUE = '#3B82F6';
+        var GRID = 'rgba(148, 163, 184, 0.1)', TEXT = '#94A3B8';
+
+        // Enrollment line
+        var eEl = document.getElementById('enrollmentChart');
+        if (eEl && Array.isArray(window.__chartEnrollment)) {
+            var data = window.__chartEnrollment;
+            var labels = data.length ? data.map(function (d) { return d.month; }) : ['No Data'];
+            var values = data.length ? data.map(function (d) { return Number(d.count) || 0; }) : [0];
+            var ctx = eEl.getContext('2d');
+            var grad = ctx.createLinearGradient(0, 0, 0, 300);
+            grad.addColorStop(0, 'rgba(139, 92, 246, 0.4)');
+            grad.addColorStop(1, 'rgba(139, 92, 246, 0)');
+            new Chart(ctx, {
+                type: 'line',
+                data: { labels: labels, datasets: [{ data: values, borderColor: VIOLET, backgroundColor: grad, borderWidth: 3, pointBackgroundColor: CYAN, pointBorderColor: '#0B0F19', pointBorderWidth: 2, pointRadius: 5, fill: true, tension: 0.4 }] },
+                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, grid: { color: GRID }, ticks: { color: TEXT, stepSize: 1 } }, x: { grid: { display: false }, ticks: { color: TEXT } } } }
+            });
+        }
+
+        // Attendance doughnut
+        var aEl = document.getElementById('attendanceChart');
+        if (aEl && Array.isArray(window.__chartAttendance)) {
+            var data = window.__chartAttendance;
+            var labels = data.length ? data.map(function (d) { return d.label; }) : ['No Data'];
+            var values = data.length ? data.map(function (d) { return Number(d.count) || 0; }) : [1];
+            var colorMap = { Present: GREEN, Late: YELLOW, Absent: RED, Excused: BLUE };
+            var colors = labels.map(function (l) { return colorMap[l] || '#475569'; });
+            new Chart(aEl.getContext('2d'), {
+                type: 'doughnut',
+                data: { labels: labels, datasets: [{ data: values, backgroundColor: colors, borderColor: '#1E293B', borderWidth: 3, hoverOffset: 6 }] },
+                options: { responsive: true, maintainAspectRatio: false, cutout: '68%', plugins: { legend: { position: 'bottom', labels: { color: TEXT, boxWidth: 12, padding: 12, font: { size: 11 } } } } }
+            });
+        }
+
+        // Department bar
+        var dEl = document.getElementById('departmentChart');
+        if (dEl && Array.isArray(window.__chartDepartment)) {
+            var data = window.__chartDepartment;
+            var labels = data.length ? data.map(function (d) { return d.label; }) : ['No Data'];
+            var values = data.length ? data.map(function (d) { return Number(d.count) || 0; }) : [0];
+            var ctx = dEl.getContext('2d');
+            var barGrad = ctx.createLinearGradient(0, 0, 0, 300);
+            barGrad.addColorStop(0, CYAN);
+            barGrad.addColorStop(1, VIOLET);
+            new Chart(ctx, {
+                type: 'bar',
+                data: { labels: labels, datasets: [{ data: values, backgroundColor: barGrad, borderRadius: 8, borderSkipped: false }] },
+                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, grid: { color: GRID }, ticks: { color: TEXT, stepSize: 1 } }, x: { grid: { display: false }, ticks: { color: TEXT, font: { size: 11 } } } } }
+            });
+        }
+    });
+</script>

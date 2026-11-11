@@ -1,0 +1,29 @@
+<!-- Top progress bar -->
+<div id="topProgress"
+    class="fixed top-0 left-0 h-1 bg-gradient-to-r from-brand-violet via-brand-cyan to-brand-violet z-[10000] transition-all duration-300 opacity-0"
+    style="width: 0%;"></div>
+
+<!-- Full-page loader overlay -->
+<div id="globalLoader"
+    class="fixed inset-0 z-[9999] bg-brand-navy/95 backdrop-blur-sm flex items-center justify-center opacity-0 pointer-events-none transition-opacity duration-300">
+
+    <div class="text-center">
+        <div class="relative w-24 h-24 mx-auto mb-6">
+            <div class="absolute inset-0 rounded-full border-4 border-brand-violet/10"></div>
+            <div class="absolute inset-0 rounded-full border-4 border-transparent border-t-brand-violet animate-spin">
+            </div>
+            <div class="absolute inset-3 rounded-full border-4 border-transparent border-b-brand-cyan animate-spin"
+                style="animation-direction: reverse; animation-duration: 1.4s;"></div>
+            <div class="absolute inset-0 flex items-center justify-center">
+                <i data-lucide="graduation-cap" class="w-8 h-8 text-brand-violet"></i>
+            </div>
+        </div>
+        <p class="text-white font-semibold text-lg tracking-tight">Loading<span class="animate-pulse">...</span></p>
+        <p class="text-gray-500 text-sm mt-1">Please wait a moment</p>
+        <div class="flex justify-center gap-1.5 mt-4">
+            <span class="w-2 h-2 rounded-full bg-brand-violet animate-bounce" style="animation-delay: 0ms;"></span>
+            <span class="w-2 h-2 rounded-full bg-brand-violet/80 animate-bounce" style="animation-delay: 150ms;"></span>
+            <span class="w-2 h-2 rounded-full bg-brand-cyan/80 animate-bounce" style="animation-delay: 300ms;"></span>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,133 @@
+<div class="mb-6 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+    <div>
+        <h2 class="text-2xl font-bold text-white">Student Directory</h2>
+        <p class="text-gray-400 text-sm">Manage all student records</p>
+    </div>
+    <a href="/students/create"
+        class="bg-brand-violet hover:bg-violet-600 text-white px-4 py-2 rounded-lg font-medium flex items-center gap-2">
+        <i data-lucide="plus" class="w-4 h-4"></i> Add Student
+    </a>
+</div>
+
+<div class="bg-brand-slate rounded-2xl border border-gray-800 shadow-lg overflow-hidden">
+
+    <div class="p-4 border-b border-gray-800 bg-brand-slate/50">
+        <form action="/students" method="GET" class="flex flex-col md:flex-row gap-2">
+            <div class="relative flex-1 max-w-md">
+                <i data-lucide="search" class="absolute left-3 top-2.5 text-gray-500 w-4 h-4"></i>
+                <input type="text" name="search" value="<%= search || '' %>" placeholder="Search by name or ID..."
+                    class="w-full bg-brand-navy border border-gray-700 rounded-lg pl-10 pr-4 py-2 text-sm text-white focus:outline-none focus:border-brand-violet">
+            </div>
+            <select name="status"
+                class="bg-brand-navy border border-gray-700 rounded-lg px-4 py-2 text-sm text-white focus:outline-none focus:border-brand-violet">
+                <option value="">All Status</option>
+                <option value="Active" <%=statusFilter==='Active' ? 'selected' : '' %>>Active</option>
+                <option value="Inactive" <%=statusFilter==='Inactive' ? 'selected' : '' %>>Inactive</option>
+                <option value="Graduated" <%=statusFilter==='Graduated' ? 'selected' : '' %>>Graduated</option>
+            </select>
+            <button type="submit"
+                class="bg-gray-700 hover:bg-gray-600 text-white px-4 py-2 rounded-lg text-sm">Filter</button>
+        </form>
+    </div>
+
+    <div class="overflow-x-auto">
+        <table class="w-full text-left text-sm text-gray-400">
+            <thead class="text-xs uppercase bg-brand-navy/50 border-b border-gray-800">
+                <tr>
+                    <th class="px-6 py-4">Student</th>
+                    <th class="px-6 py-4">ID Code</th>
+                    <th class="px-6 py-4">Enrollment</th>
+                    <th class="px-6 py-4">Status</th>
+                    <th class="px-6 py-4 text-right">Actions</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-800">
+                <% if (!students || students.length===0) { %>
+                    <tr>
+                        <td colspan="5" class="px-6 py-8 text-center text-gray-500">No students found.</td>
+                    </tr>
+                    <% } else { %>
+                        <% for (const student of students) { %>
+                            <% let badgeClass='bg-red-500/10 text-red-400 border border-red-500/20' ; if
+                                (student.status==='Active' )
+                                badgeClass='bg-green-500/10 text-green-400 border border-green-500/20' ; if
+                                (student.status==='Graduated' )
+                                badgeClass='bg-blue-500/10 text-blue-400 border border-blue-500/20' ; %>
+                                <tr class="hover:bg-brand-navy/30 transition-colors">
+                                    <td class="px-6 py-4">
+                                        <div class="flex items-center gap-3">
+                                            <img src="/<%= student.profile_photo %>"
+                                                class="w-10 h-10 rounded-full object-cover border border-gray-700"
+                                                alt="">
+                                            <div>
+                                                <div class="font-medium text-white">
+                                                    <%= student.first_name %>
+                                                        <%= student.last_name %>
+                                                </div>
+                                                <div class="text-xs text-gray-500">
+                                                    <%= student.gender %> • DOB: <%= new
+                                                            Date(student.dob).toLocaleDateString() %>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td class="px-6 py-4 font-mono text-brand-cyan">
+                                        <%= student.student_id_code %>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <%= new Date(student.enrollment_date).toLocaleDateString() %>
+                                    </td>
+                                    <td class="px-6 py-4">
+                                        <span class="px-2.5 py-1 rounded-full text-xs font-medium <%= badgeClass %>">
+                                            <%= student.status %>
+                                        </span>
+                                    </td>
+                                    <td class="px-6 py-4 text-right">
+                                        <a href="/students/edit/<%= student.id %>"
+                                            class="text-gray-400 hover:text-brand-violet mr-3" title="Edit">
+                                            <i data-lucide="edit" class="w-4 h-4 inline"></i>
+                                        </a>
+                                        <button onclick="confirmDelete(<%= student.id %>)"
+                                            class="text-gray-400 hover:text-red-500" title="Archive">
+                                            <i data-lucide="trash-2" class="w-4 h-4 inline"></i>
+                                        </button>
+                                    </td>
+                                </tr>
+                                <% } %>
+                                    <% } %>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="p-4 border-t border-gray-800 flex items-center justify-between bg-brand-slate/50">
+        <span class="text-sm text-gray-400">Page <%= currentPage %> of <%= totalPages || 1 %></span>
+        <div class="flex gap-2">
+            <% if (currentPage> 1) { %>
+                <a href="/students?page=<%= currentPage - 1 %>&search=<%= search || '' %>&status=<%= statusFilter || '' %>"
+                    class="px-3 py-1 bg-brand-navy border border-gray-700 rounded hover:bg-gray-700 text-white text-sm">Previous</a>
+                <% } %>
+                    <% if (currentPage < totalPages) { %>
+                        <a href="/students?page=<%= currentPage + 1 %>&search=<%= search || '' %>&status=<%= statusFilter || '' %>"
+                            class="px-3 py-1 bg-brand-navy border border-gray-700 rounded hover:bg-gray-700 text-white text-sm">Next</a>
+                        <% } %>
+        </div>
+    </div>
+</div>
+
+<script>
+    function confirmDelete(id) {
+        Swal.fire({
+            title: 'Are you sure?',
+            text: 'This will archive the student record.',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#8B5CF6',
+            cancelButtonColor: '#EF4444',
+            confirmButtonText: 'Yes, archive it!',
+            background: '#1E293B',
+            color: '#F8FAFC'
+        }).then((result) => {
+            if (result.isConfirmed) window.location.href = '/students/delete/' + id;
+        });
+    }
+</script>
